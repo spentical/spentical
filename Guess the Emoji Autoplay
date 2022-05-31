@@ -1,0 +1,22 @@
+--\\ VARIABLES //--
+local Folder = workspace.Doors.Normal
+local Player = game.Players.LocalPlayer
+
+local WorkspacePlayer = workspace[Player.Name]
+local LevelNumber = Player.Levels.Normal.Value
+
+--\\ MAIN SCRIPT //--
+while LevelNumber ~= 175 do
+    WorkspacePlayer.Humanoid.WalkSpeed = 50
+    local LevelNumber = Player.Levels.Normal.Value
+    wait(1.5) --\\
+    for _, obj in pairs(Folder:GetChildren()) do
+        if obj.Name == tostring(LevelNumber) then
+            --\\ GENERATE ANSWER
+            for _, ans in pairs(obj.Answers:GetChildren()) do
+                game:GetService("ReplicatedStorage").Events.SubmitAnswer:FireServer(ans.Value) --\\ SUBMIT ANSWER
+                WorkspacePlayer.Humanoid.WalkToPoint = obj.Door.Position --\\ WALK TO NEXT PART | NOT TELEPORT SO NO ONE CAN CLIP-REPORT
+            end
+        end
+    end
+end
